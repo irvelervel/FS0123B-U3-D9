@@ -1,6 +1,11 @@
 import { Col, Row, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 
 const BookDetail = ({ bookSelected }) => {
+  const dispatch = useDispatch()
+  // abbiamo ottenuto dispatch! :)
+  // la useremo per "dispatchare" azioni (oggetti JS con una proprietà "type")
+
   return (
     <div className="mt-3 mb-4 mb-lg-0">
       {bookSelected ? (
@@ -29,7 +34,19 @@ const BookDetail = ({ bookSelected }) => {
                 <span className="font-weight-bold">Price:</span>&nbsp;
                 {bookSelected.price}$
               </p>
-              <Button color="primary" onClick={() => {}}>
+              <Button
+                color="primary"
+                onClick={() => {
+                  // qui dovremmo azionare la generazione di un nuovo stato
+                  // --> "dispatchando" un'action
+                  dispatch({
+                    type: 'ADD_TO_CART',
+                    payload: bookSelected,
+                    // il type rappresenta il "nome" della action
+                    // il payload rappresenta il "contenuto" della action
+                  })
+                }}
+              >
                 ADD TO CART
               </Button>
             </Col>

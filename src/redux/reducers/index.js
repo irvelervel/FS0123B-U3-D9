@@ -22,6 +22,35 @@ const mainReducer = (state = initialState, action) => {
   // e in base a quello deciderà cosa fare
 
   switch (action.type) {
+    // il nostro action.type è 'ADD_TO_CART'
+
+    case 'ADD_TO_CART':
+      return {
+        ...state, // questo si occupa si portare dentro eventuali
+        // ALTRE proprietà che non siano cart
+        cart: {
+          // action.payload è il nostro libro che vogliamo aggiungere
+          content: [...state.cart.content, action.payload],
+          // PUSH NON SI PUÒ USARE :(
+          // 1) muta l'array nello stato, la funzione non è più PURA
+          // 2) il valore di ritorno di push() è la nuova lunghezza dell'array (quindi un numero)
+          // content: state.cart.content.push(action.payload) --> 3
+        },
+      }
+
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        cart: {
+          // devo togliere da content l'elemento con indice action.payload
+          content: [
+            ...state.cart.content.slice(0, action.payload),
+            ...state.cart.content.slice(action.payload + 1),
+          ],
+          //   content: state.cart.content.filter((book, i) => i !== action.payload),
+        },
+      }
+
     default:
       return state
     //  questa è come una rete di sicurezza: nel caso il nostro reducer incontri
